@@ -1,26 +1,19 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
+	"log"
 	"net/http"
+	"os"
+	"simplegosebserver/src/handlers/handlers"
 )
 
 func main() {
+	l := log.New(os.Stdout, "product-api", log.LstdFlags)
+	gh := handlers.NewGreetings(l)
 
-	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
+	sm := http.NewServeMux()
+	sm.Handle("/", gh)
 
-		data, error := ioutil.ReadAll(r.Body)
-
-		if error != nil {
-			rw.WriteHeader(http.StatusBadRequest)
-			rw.Write([]byte("Something went wrong"))
-			return
-		}
-
-		fmt.Fprintf(rw, "Hello %s", data)
-	})
-
-	http.ListenAndServe("127.0.0.1:9090", nil)
+	http.ListenAndServe("127.0.0.1:9090", sm)
 
 }
