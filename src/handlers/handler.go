@@ -7,18 +7,18 @@ import (
 	"net/http"
 )
 
-// Greeting - struct
+//Greeting struct
 type Greeting struct {
 	l *log.Logger
 }
 
-// NewGreeting - Func
+// NewGreeting struct
 func NewGreeting(l *log.Logger) *Greeting {
 	return &Greeting{l}
 }
 
 // ServerHTTP - Implemented interface for Greeting type
-func (g *Greeting) ServerHTTP(rw http.ResponseWriter, r *http.Request) {
+func (g *Greeting) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	g.l.Println("Greetings logged...")
 	data, error := ioutil.ReadAll(r.Body)
